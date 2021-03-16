@@ -9,3 +9,4 @@ public interface Factory<T> {
 
 	public List<JSONObject> getInfo();
 }
+ 
