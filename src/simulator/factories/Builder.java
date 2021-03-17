@@ -3,43 +3,40 @@ package simulator.factories;
 import org.json.JSONObject;
 
 public abstract class Builder<T> {
-	
+
 	protected String type;
 
-	//??? #3 illegalargexception
+	// ??? #3 illegalargexception
 	public T createInstance(JSONObject info) {
-		if (this.type.equals(info.getString("type")))
-			return createTheInstance(info.getJSONObject("data"));
-		else 
+
+		// ??? T x
+		T x;
+		if (this.type.equals(info.getString("type"))) {
+			x = createTheInstance(info.getJSONObject("data"));
+			if (x == null) {
+				throw new IllegalArgumentException("invalid data");
+			} else {
+
+				return x;
+			}
+
+		} else
 			return null;
 	}
 
 	abstract T createTheInstance(JSONObject data);
-	
-		JSONObject getInfo() {
-			
-			JSONObject x = new JSONObject();
-			x.put("type", this.type);
-			
-			x.put("data", createDate());
-			return x;
-			
-		}
-		
-		//??? abstract too? #2
-		protected JSONObject createDate() {
-			return new JSONObject();
-		}
-		
-		
-		//??? #1 whats her
-		public JSONObject getBuilderInfo() {
-			return null;
-		}
-	
-	
 
-	
+	protected JSONObject createData() {
+		return new JSONObject();
+	}
+
+	// ??? is that good?
+	public JSONObject getBuilderInfo() {
+		JSONObject info = new JSONObject();
+		info.put("type", type);
+		info.put("data", createData());
+		return info;
+
+	}
 
 }
-
