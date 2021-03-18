@@ -7,12 +7,10 @@ import org.json.JSONObject;
 
 public class BuilderBasedFactory<T> implements Factory<T> {
 	
-	//no public needed before constructor?
-	
 	List<Builder<T>> _builders;
 	List<JSONObject> _info;
 	
-	BuilderBasedFactory(List<Builder<T>> builders) {
+	public BuilderBasedFactory(List<Builder<T>> builders) {
 		
 		_builders = new ArrayList<>(builders);
 		_info = new ArrayList<>();

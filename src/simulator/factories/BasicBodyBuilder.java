@@ -7,8 +7,6 @@ import simulator.model.Body;
 
 public class BasicBodyBuilder extends Builder<Body> {
 
-	//getstring id????
-	// 2 Vectors in constructor
 	
 
 	@Override

@@ -5,8 +5,8 @@ import org.json.JSONObject;
 import simulator.control.StateComparator;
 
 public class MassEqualStatesBuilder extends Builder<StateComparator> {
-
-	//??? Stats or states
+	
+	//TODO after implementing statecomparators
 	
 	@Override
 	StateComparator createTheInstance(JSONObject data) {

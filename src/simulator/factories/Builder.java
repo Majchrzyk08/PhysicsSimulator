@@ -6,19 +6,13 @@ public abstract class Builder<T> {
 
 	protected String type;
 
-	// ??? #3 illegalargexception
 	public T createInstance(JSONObject info) {
 
-		// ??? T x
+
 		T x;
 		if (this.type.equals(info.getString("type"))) {
 			x = createTheInstance(info.getJSONObject("data"));
-			if (x == null) {
-				throw new IllegalArgumentException("invalid data");
-			} else {
-
-				return x;
-			}
+			return x;
 
 		} else
 			return null;
@@ -30,11 +24,12 @@ public abstract class Builder<T> {
 		return new JSONObject();
 	}
 
-	// ??? is that good?
+
 	public JSONObject getBuilderInfo() {
 		JSONObject info = new JSONObject();
 		info.put("type", type);
 		info.put("data", createData());
+		
 		return info;
 
 	}

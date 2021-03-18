@@ -6,11 +6,12 @@ import simulator.model.ForceLaws;
 import simulator.model.NewtonUniversalGravitation;
 
 public class NewtonUniversalGravitationBuilder extends Builder<ForceLaws> {
-
-	//Key “G” is optional, with default value 6.67E-11 ???
 	
 	@Override
 	ForceLaws createTheInstance(JSONObject data) {
+		if(!data.has("G")) {
+			data.put("G", 6.67E-11);
+		}
 		return new NewtonUniversalGravitation(data.getDouble("G"));
 	}
 

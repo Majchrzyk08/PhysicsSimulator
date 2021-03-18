@@ -8,8 +8,6 @@ import simulator.model.MassLossingBody;
 
 public class MassLosingBodyBuilder extends Builder<Body> {
 
-	//the same as with body builder
-	//All builders should throw corresponding exceptions if the input data is not valid
 	
 	@Override
 	Body createTheInstance(JSONObject data) {
