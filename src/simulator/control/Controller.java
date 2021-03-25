@@ -2,6 +2,7 @@ package simulator.control;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
 import org.json.JSONArray;
@@ -31,8 +32,24 @@ public class Controller {
 		
 	}
 
+	//3rd, 4th argument pass NULL and try to implement main firstly
+	//finish it at the end
 	
 	public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp) {
+		
+			
+		PrintStream s = new PrintStream(out);
+		s.println("{");
+		s.println("\"states\": [");
+		s.println(p.getState());
+		for(int i=0; i<n; i++) {
+			p.advance();
+			s.println(",");
+			s.println(p.getState());
+		}
+		s.println("]");
+		s.println("}");
+		
 		
 		
 		
