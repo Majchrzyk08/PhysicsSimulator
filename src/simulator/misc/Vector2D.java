@@ -17,6 +17,12 @@ public class Vector2D {
 		_x = v._x;
 		_y = v._y;
 	}
+	
+	public Vector2D(JSONArray v) {
+		_x = v.getDouble(0);
+		_y = v.getDouble(1);
+		
+	}
 
 	// create a vector from an array
 	public Vector2D(double x, double y) {

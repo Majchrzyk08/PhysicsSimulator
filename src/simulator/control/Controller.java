@@ -22,7 +22,6 @@ public class Controller {
 		this.f = f;
 	}
 	
-	//question :D
 	public void loadBodies(InputStream in) {
 		JSONObject jsonInput = new JSONObject(new JSONTokener(in));
 		JSONArray a = jsonInput.getJSONArray("bodies");
@@ -32,8 +31,10 @@ public class Controller {
 		
 	}
 
-	//after comparators
+	
 	public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp) {
+		
+		
 		
 		
 	}
