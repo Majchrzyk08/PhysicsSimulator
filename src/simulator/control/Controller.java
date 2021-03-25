@@ -32,20 +32,32 @@ public class Controller {
 		
 	}
 
-	//3rd, 4th argument pass NULL and try to implement main firstly
-	//finish it at the end
 	
-	public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp) {
+	public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp) throws ResultNotEqualToExpectedException {
 		
-			
+		int i = 0;
+		JSONArray a = null;
+		
+		if(expOut != null) {
+			JSONObject jsonInput = new JSONObject(new JSONTokener(expOut));
+			a = jsonInput.getJSONArray("states");
+		}
+		
 		PrintStream s = new PrintStream(out);
 		s.println("{");
 		s.println("\"states\": [");
+		if(a != null && !cmp.equal(a.getJSONObject(0), p.getState())) {
+			throw new ResultNotEqualToExpectedException(a.getJSONObject(0), p.getState(), i);
+		}
 		s.println(p.getState());
-		for(int i=0; i<n; i++) {
+		for(i=1; i<=n; i++) {
 			p.advance();
+			JSONObject x = p.getState();
+			if(a != null && !cmp.equal(a.getJSONObject(i), x)) {
+				throw new ResultNotEqualToExpectedException(a.getJSONObject(i), p.getState(), i);
+			}
 			s.println(",");
-			s.println(p.getState());
+			s.println(x);
 		}
 		s.println("]");
 		s.println("}");
