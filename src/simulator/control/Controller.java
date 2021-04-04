@@ -32,7 +32,7 @@ public class Controller {
 		
 	}
 
-	
+
 	public void run(int n, OutputStream out, InputStream expOut, StateComparator cmp) throws ResultNotEqualToExpectedException {
 		
 		int i = 0;

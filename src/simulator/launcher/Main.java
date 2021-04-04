@@ -1,5 +1,7 @@
 package simulator.launcher;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 import org.apache.commons.cli.CommandLine;
@@ -24,6 +26,7 @@ import simulator.factories.NewtonUniversalGravitationBuilder;
 import simulator.factories.NoForceBuilder;
 import simulator.model.Body;
 import simulator.model.ForceLaws;
+import simulator.model.PhysicsSimulator;
 
 public class Main {
 
@@ -32,14 +35,15 @@ public class Main {
 	private final static Double _dtimeDefaultValue = 2500.0;
 	private final static String _forceLawsDefaultValue = "nlug";
 	private final static String _stateComparatorDefaultValue = "epseq";
-
+	private final static Integer _stepsDefaultValue = 150;
+	
 	// some attributes to stores values corresponding to command-line parameters
 	//
 	private static Double _dtime = null;
+	private static Integer _steps = null;
 	private static String _inFile = null;
 	private static String _outFile = null;
 	private static String _expectedOutFile = null;
-	private static Integer _steps = 150;
 	private static JSONObject _forceLawsInfo = null;
 	private static JSONObject _stateComparatorInfo = null;
 
@@ -199,27 +203,42 @@ public class Main {
 	}
 	
 	
+	
 	private static void parseOutFileOption(CommandLine line) throws ParseException { //throws something???
 		_outFile = line.getOptionValue("o");
 		if (_outFile == null) {
 			//TODO STANDARD OUTPUT
+			_outFile =
+		} else {
+
 		}
 	}
 	
-	private static void parseExpectedOutputOption(CommandLine line) throws ParseException { //throws something???
+	
+	
+	private static void parseExpectedOutputOption(CommandLine line) { 
 		_expectedOutFile = line.getOptionValue("eo");
-		if (_expectedOutFile == null) {
-			//TODO if it is provided then where the comparison is made?
+		
+	}
+	
+	private static void parseStepsOption(CommandLine line) throws ParseException { 
+		String s = line.getOptionValue("s", _stepsDefaultValue.toString());
+		try {
+			_steps = Integer.parseInt(s);
+			assert (_steps >= 0);
+		} catch (Exception e) {
+			throw new ParseException("Invalid steps value: " + s);
 		}
 	}
 	
-	//OK OR NOT OK???
-	private static void parseStepsOption(CommandLine line) throws ParseException { //throws something???
-		_steps = Integer.parseInt(line.getOptionValue("s"));
-		if(_steps == null) {
-			_steps = 150;
-		}
-	}
+//	//OK???
+//	private static void parseStepsOption(CommandLine line) throws ParseException { //throws something???
+//		_steps = Integer.parseInt(line.getOptionValue("s"));
+//		if(_steps == null) {
+//			_steps = 150;
+//		}
+//		
+//	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
 
@@ -276,7 +295,8 @@ public class Main {
 	}
 
 	private static void startBatchMode() throws Exception {
-		// TODO complete this method
+		PhysicsSimulator ps = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo) );
+		
 	}
 
 	private static void start(String[] args) throws Exception {
