@@ -90,7 +90,7 @@ public class Main {
 		Options cmdLineOptions = buildOptions();
 
 		// parse the command line as provided in args
-		//
+		
 		CommandLineParser parser = new DefaultParser();
 		try {
 			CommandLine line = parser.parse(cmdLineOptions, args);
@@ -321,7 +321,6 @@ public class Main {
 	public static void main(String[] args) {
 		
 		try {
-
 			init();
 			start(args);
 		} catch (Exception e) {
