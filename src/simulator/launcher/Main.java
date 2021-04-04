@@ -1,6 +1,10 @@
 package simulator.launcher;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -13,6 +17,7 @@ import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.json.JSONObject;
 
+import simulator.control.Controller;
 import simulator.control.StateComparator;
 import simulator.factories.BasicBodyBuilder;
 import simulator.factories.Builder;
@@ -78,7 +83,7 @@ public class Main {
 		
 	}
 
-	private static void parseArgs(String[] args) {
+	private static void parseArgs(String[] args) throws FileNotFoundException {
 
 		// define the valid command line options
 		//
@@ -204,13 +209,10 @@ public class Main {
 	
 	
 	
-	private static void parseOutFileOption(CommandLine line) throws ParseException { //throws something???
+	private static void parseOutFileOption(CommandLine line) throws ParseException {
 		_outFile = line.getOptionValue("o");
-		if (_outFile == null) {
-			//TODO STANDARD OUTPUT
-			_outFile =
-		} else {
-
+		if ( !(_outFile instanceof String) ) {
+		  throw new ParseException("Output file has to be a string");
 		}
 	}
 	
@@ -230,15 +232,6 @@ public class Main {
 			throw new ParseException("Invalid steps value: " + s);
 		}
 	}
-	
-//	//OK???
-//	private static void parseStepsOption(CommandLine line) throws ParseException { //throws something???
-//		_steps = Integer.parseInt(line.getOptionValue("s"));
-//		if(_steps == null) {
-//			_steps = 150;
-//		}
-//		
-//	}
 
 	private static JSONObject parseWRTFactory(String v, Factory<?> factory) {
 
@@ -296,6 +289,27 @@ public class Main {
 
 	private static void startBatchMode() throws Exception {
 		PhysicsSimulator ps = new PhysicsSimulator(_dtime, _forceLawsFactory.createInstance(_forceLawsInfo) );
+		
+		OutputStream os;
+		if (_outFile == null) {
+			os = System.out;
+		}
+		else {
+			os = new FileOutputStream(new File(_outFile));
+		}
+		
+		InputStream is = new FileInputStream(new File(_inFile));
+		InputStream eos = new FileInputStream(new File(_expectedOutFile));
+		
+		StateComparator sc = _stateComparatorFactory.createInstance(_stateComparatorInfo);
+		Controller cont = new Controller(ps, _bodyFactory);
+		cont.loadBodies(is);
+		
+		if(_expectedOutFile == null) {
+			cont.run(_steps, os, null, sc);
+		} else {
+			cont.run(_steps, os, eos, sc);
+		}
 		
 	}
 
